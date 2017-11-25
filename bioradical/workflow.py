@@ -1,4 +1,5 @@
 from itertools import product
+import os
 
 import radical.entk as e
 
@@ -46,5 +47,29 @@ class TIESWorkflow(Workflow):
 
 
 if __name__ == '__main__':
-    e = ESMACSWorkflow(number_of_replicas=5, steps=['eq0', 'eq1', 'eq2', 'sim'])
-    e.pipelines
+    os.environ['RADICAL_ENTK_VERBOSE'] = 'INFO'
+    os.environ['RADICAL_PILOT_DBURL'] = 'mongodb://radical:fg*2GT3^eB@crick.chem.ucl.ac.uk:27017/admin'
+    os.environ['RP_ENABLE_OLD_DEFINES'] = 'True'
+
+    wf = ESMACSWorkflow(number_of_replicas=5, steps=['eq0', 'eq1', 'eq2', 'sim'])
+
+    # Resource and AppManager
+
+    res_dict = {
+            'resource': 'local.localhost',
+            'walltime': 10,
+            'cores': 1,
+            'project': '',
+    }
+
+    # Create Resource Manager object with the above resource description
+    resource_manager = e.ResourceManager(res_dict)
+    resource_manager.shared_data = ['complex.pdb', 'complex.top']
+    resource_manager.shared_data += ["{}.conf".format(w) for w in wf.steps]
+
+    # Create Application Manager
+    app_manager = e.AppManager(port=32775)
+    app_manager.resource_manager = resource_manager
+    app_manager.assign_workflow(wf.pipelines)
+    app_manager.run()
+
