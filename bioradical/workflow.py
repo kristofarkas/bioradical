@@ -68,7 +68,7 @@ if __name__ == '__main__':
     resource_manager.shared_data += ["{}.conf".format(w) for w in wf.steps]
 
     # Create Application Manager
-    app_manager = e.AppManager(port=32775)
+    app_manager = e.AppManager()
     app_manager.resource_manager = resource_manager
     app_manager.assign_workflow(wf.pipelines)
     app_manager.run()
