@@ -1,6 +1,6 @@
 from radical.entk import Task, Stage
 
-_simulation_file_suffixes = ['.coor', '.xst', '.xtc']
+_simulation_file_suffixes = ['.coor', '.xsc', '.vel']
 
 
 class Simulation(Stage):
@@ -11,6 +11,7 @@ class Simulation(Stage):
         task = Task()
         task.name = name
         task.executable = ['/u/sciteam/jphillip/NAMD_build.latest/NAMD_2.12_CRAY-XE-ugni-BlueWaters-memopt/namd2']
+        task.arguments = ['{}.conf'.format(name), '&>', '{}.log'.format(name)]
 
         # Copy the *.conf file from $SHARED
         task.copy_input_data = ['$SHARED/{}.conf'.format(name)]
