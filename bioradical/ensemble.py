@@ -58,7 +58,3 @@ def _lambda_window(ld):
         t.pre_exec = ["sed -i '.bak' 's/LAMBDA/{}/g' *".format(ld)]
         t.link_input_data += ['$SHARED/tags.pdb']
     return f
-
-
-if __name__ == '__main__':
-    print(range(0))

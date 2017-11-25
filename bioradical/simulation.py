@@ -31,6 +31,3 @@ class Simulation(e.Stage):
         self.add_tasks(task)
 
 
-if __name__ == '__main__':
-    s = list()
-
