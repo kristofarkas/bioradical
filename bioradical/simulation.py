@@ -1,14 +1,14 @@
-import radical.entk as e
+from radical.entk import Task, Stage
 
 _simulation_file_suffixes = ['.coor', '.xst', '.xtc']
 
 
-class Simulation(e.Stage):
+class Simulation(Stage):
 
     def __init__(self, name, p):
         super(Simulation, self).__init__()
 
-        task = e.Task()
+        task = Task()
         task.name = name
         task.executable = ['/u/sciteam/jphillip/NAMD_build.latest/NAMD_2.12_CRAY-XE-ugni-BlueWaters-memopt/namd2']
 
@@ -29,8 +29,3 @@ class Simulation(e.Stage):
         task.link_input_data = to_link
 
         self.add_tasks(task)
-
-
-if __name__ == '__main__':
-    s = list()
-

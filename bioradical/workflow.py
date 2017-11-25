@@ -1,7 +1,7 @@
 from itertools import product
 import os
 
-import radical.entk as e
+from radical.entk import Pipeline
 
 from bioradical.ensemble import LambdaWindow, Replica
 from bioradical.simulation import Simulation
@@ -17,7 +17,7 @@ class Workflow(object):
     def pipelines(self):
         pipelines = set()
         for ensembles in product(*self.ensembles):
-            pipeline = e.Pipeline()
+            pipeline = Pipeline()
 
             for step in self.steps:
                 simulation = Simulation(name=step, p=pipeline)
