@@ -66,8 +66,7 @@ class LambdaWindow(EnsembleIterator):
         ld = next(self._iterator)
 
         def wrapper(simulation):
-            (t,) = simulation.tasks
-            t.pre_exec = ["sed -i '.bak' 's/LAMBDA/{}/g' *".format(ld)]
-            t.link_input_data += ['$SHARED/tags.pdb']
+            simulation.pre_exec = ["sed -i '.bak' 's/LAMBDA/{}/g' *".format(ld)]
+            simulation.link_input_data += ['$SHARED/tags.pdb']
 
         return wrapper
