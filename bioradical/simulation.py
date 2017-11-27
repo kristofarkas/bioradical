@@ -19,6 +19,8 @@ class Simulation(Task):
 
         self.executable = [_namd]
 
+        self._update_linked_data_list()
+
     @property
     def step(self):
         return self.name
