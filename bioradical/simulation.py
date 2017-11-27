@@ -21,6 +21,9 @@ class Simulation(Task):
 
         self._update_linked_data_list()
 
+        self.mpi = True
+        self.cores = 16
+
     @property
     def step(self):
         return self.name
