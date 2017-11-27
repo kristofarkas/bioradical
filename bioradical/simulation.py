@@ -2,7 +2,7 @@ from radical.entk import Task, Stage
 
 _simulation_file_suffixes = ['.coor', '.xsc', '.vel']
 _namd = '/u/sciteam/jphillip/NAMD_build.latest/NAMD_2.12_CRAY-XE-ugni-BlueWaters-memopt/namd2'
-
+_namd = 'namd2'
 
 class Simulation(Stage):
 
