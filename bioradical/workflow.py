@@ -19,7 +19,7 @@ class Workflow(object):
             pipeline = radical.entk.Pipeline()
 
             for step in self.steps:
-                simulation = Simulation(name=step, pipeline=pipeline)
+                simulation = Simulation(step=step, pipeline=pipeline)
 
                 for ens in ensembles:
                     ens(simulation)

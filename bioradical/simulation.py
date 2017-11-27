@@ -8,12 +8,14 @@ _namd = 'namd2'
 class Simulation(Task):
 
     def __init__(self, step, pipeline, system='complex', constraint='f4'):
+        
+        super(Simulation, self).__init__()
 
         self.step = step
         self.pipeline = pipeline
 
-        self.system = system
-        self.constraint = constraint
+        self._system = system
+        self._constraint = constraint
 
         self.executable = [_namd]
 
