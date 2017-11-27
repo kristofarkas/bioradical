@@ -13,6 +13,8 @@ setup(
 
     author='CCS',
 
-    packages=find_packages()
+    packages=find_packages(),
+
+    install_requires=['numpy', 'radical']
 )
 
