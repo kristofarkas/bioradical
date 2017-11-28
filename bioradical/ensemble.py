@@ -66,6 +66,6 @@ class LambdaWindow(EnsembleIterator):
         ld = next(self._iterator)
 
         def wrapper(simulation):
-            simulation.pre_exec += ["sed -i '.bak' 's/LAMBDA/{}/g' *.conf".format(ld)]
+            simulation.pre_exec += ["sed -i 's/LAMBDA/{}/g' *.conf".format(ld)]
 
         return wrapper
