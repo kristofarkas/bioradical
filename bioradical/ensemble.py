@@ -32,7 +32,7 @@ class Systems(EnsembleIterator):
         system = next(self._iterator)
         
         def wrapper(simulation):
-            simulation.system = system
+            (simulation.system, simulation.descriptors) = system
 
         return wrapper
     
@@ -52,7 +52,7 @@ class LambdaWindow(EnsembleIterator):
         """Alchemical free energy transformation
 
         :param number_of_states: This is for GROMACS type configuration files only.
-        :param number_of_windows: Number of equally spaces lambda windows
+        :param number_of_windows: Number of equally spaced lambda windows
         :param additional: Additional lambda windows to run.
         """
         it = range(number_of_states) if number_of_states is not None else np.linspace(0.0, 1.0, number_of_windows, endpoint=True)
@@ -66,7 +66,6 @@ class LambdaWindow(EnsembleIterator):
         ld = next(self._iterator)
 
         def wrapper(simulation):
-            simulation.pre_exec = ["sed -i '.bak' 's/LAMBDA/{}/g' *".format(ld)]
-            simulation.link_input_data += ['$SHARED/tags.pdb']
+            simulation.pre_exec += ["sed -i '.bak' 's/LAMBDA/{}/g' *.conf".format(ld)]
 
         return wrapper
