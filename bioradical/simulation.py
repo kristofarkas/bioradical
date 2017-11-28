@@ -1,14 +1,19 @@
 from radical.entk import Task, Stage
 
 _simulation_file_suffixes = ['.coor', '.xsc', '.vel']
-_namd = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-ugni-smp-BlueWaters/namd2 +ppn 30 +pemap 0-29 +commap 30'
+_namd = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-ugni-smp-BlueWaters/namd2'
 # _namd = 'namd2'
 
 
 class Simulation(Task):
-
     def __init__(self, step, pipeline, system=None, descriptors=None):
-        
+        """Create a new simulation step.
+
+        :param step: The name of the step, for example: min, eq, prod, sim etc.
+        :param pipeline: The pipeline that it will be in. Used to get previous steps.
+        :param system: The name of the PDB and topology files. (without suffix)
+        :param descriptors: Other files that are required to run the simulation (constraints, tags, etc.)
+        """
         super(Simulation, self).__init__()
 
         self.step = step
