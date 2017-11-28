@@ -7,14 +7,14 @@ _namd = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-ugni-smp-BlueWaters/namd2 +ppn 
 
 class Simulation(Task):
 
-    def __init__(self, step, pipeline, system, descriptors=None):
+    def __init__(self, step, pipeline, system=None, descriptors=None):
         
         super(Simulation, self).__init__()
 
         self.step = step
         self.pipeline = pipeline
 
-        self._system = system
+        self._system = system or ''
         self._descriptors = descriptors or []
         self._update_linked_data_list()
 
