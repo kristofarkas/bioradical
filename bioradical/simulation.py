@@ -1,7 +1,7 @@
 from radical.entk import Task, Stage
 
 _simulation_file_suffixes = ['.coor', '.xsc', '.vel']
-_namd = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-MPI-BlueWaters/namd2'
+_namd = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-ugni-smp-BlueWaters/namd2 +ppn 30 +pemap 0-29 +commap 30'
 # _namd = 'namd2'
 
 
@@ -16,13 +16,14 @@ class Simulation(Task):
 
         self._system = system
         self._constraint = constraint
-
-        self.executable = [_namd]
-
         self._update_linked_data_list()
 
-        self.mpi = True
+        self.executable = [_namd]
         self.cores = 16
+        self.mpi = True
+
+        # self.pre_exec = ['export OMP_NUM_THREADS=1']
+        # self.cpu_reqs = {'processes': 1, 'process_type': 'MPI', 'threads_per_process': 31, 'thread_type': None}
 
     @property
     def step(self):
