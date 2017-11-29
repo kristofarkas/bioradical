@@ -22,7 +22,7 @@ def step(self, value):
     self.copy_input_data = ['$SHARED/{}.conf'.format(self.name)]
 ```
 The `step` determines a lot about the `Task` object: the name, arguments and the **only** file that needs
-to be copied over from `$SHARED` that is the configuration file.
+to be copied over from `$SHARED` is the configuration file.
 
 ```python
 def _update_linked_data_list(self):
@@ -44,7 +44,38 @@ The `EnsembleIterator` is an implementation of this idea, and allows for a very 
 new ensembles. We already have `Replica`, `LambdaWindow`, `Systems` implemented, but it is very easy
 to do others too.
 
-The way this works, is that the iterator return a function every time `next()` is called. This function
-has 1 argument, a `Simulation` object. You can pass the a simulation through this function, and it
+The way this works, is that the iterator returns a function every time `next()` is called. This function
+has 1 argument, a `Simulation` object. You can pass the simulation through this function, and it
 will edit it to reflect the current state of the iterator.
 
+### How to implement an `EnsembleIterator`?
+
+```python
+class LambdaWindow(EnsembleIterator):
+    def __init__(self, number_of_windows=None, additional=None):
+        it = np.linspace(0.0, 1.0, number_of_windows, endpoint=True)
+        if additional:
+            it = np.append(it, additional)
+            it.sort()
+        super(LambdaWindow, self).__init__(underlying_iterable=it)
+```
+
+Simply subclass it and call `super` passing the underlying iterable, an actual python iterable,
+like an array of numbers, strings, etc.
+
+```python
+def next(self):
+
+    ld = next(self._iterator)
+
+    def wrapper(simulation):
+        simulation.pre_exec += ["sed -i 's/LAMBDA/{}/g' *.conf".format(ld)]
+
+    return wrapper
+```
+Overwrite `next` and return a function that takes a simulation and edits it in whatever way.
+In this case, we append to the pre-executable.
+
+## Workflow
+
+Finally the `Workflow` class. It has two properties: an array of steps (i.e. the names of the steps; these are assumed to be the output name of the conf file too.) and an array of `EnsembleIterator`s. The only function is `generate_pipelines()` which generates the set of `Pipeline` objects.
