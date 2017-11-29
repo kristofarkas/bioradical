@@ -32,7 +32,8 @@ class Workflow(object):
     # Private methods
 
     def _find_steps(self, folder):
-        steps = [x.strip('.conf') for (_, _, x) in os.walk(folder) if x.endswith('.conf')]
+        (_, _, files) = os.walk(folder)
+        steps = [f.strip('.conf') for f in files if f.endswith('.conf')]
         print('Detected steps: {}'.format(steps))
         return steps
 
