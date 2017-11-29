@@ -31,11 +31,10 @@ class Workflow(object):
 
     # Private methods
 
-    def _find_steps(self, folder):
-        (_, _, files) = os.walk(folder)
-        steps = [f.strip('.conf') for f in files if f.endswith('.conf')]
+    def _infer_steps(self, folder):
+        steps = [f[:-5] for (_, _, paths) in os.walk(folder) if paths for f in paths if f.endswith('.conf')]
         print('Detected steps: {}'.format(steps))
-        return steps
+        self.steps = steps
 
 
 class ESMACSWorkflow(Workflow):

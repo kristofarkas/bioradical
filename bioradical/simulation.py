@@ -73,7 +73,6 @@ class Simulation(Task):
 
         self.link_input_data = to_link
 
-    @property
     def as_stage(self):
         stage = Stage()
         stage.add_tasks(self)
