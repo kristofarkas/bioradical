@@ -4,8 +4,7 @@ import numpy as np
 
 
 class EnsembleIterator(Iterator):
-    def __init__(self, name, underlying_iterable):
-        self.name = name
+    def __init__(self, underlying_iterable):
         self.underlying_iterable = underlying_iterable
 
     def __iter__(self):
@@ -26,46 +25,45 @@ class EnsembleIterator(Iterator):
 
 class Systems(EnsembleIterator):
     def __init__(self, systems=None):
-        super(Systems, self).__init__(name='system', underlying_iterable=systems)
+        super(Systems, self).__init__(underlying_iterable=systems)
 
     def next(self):
         system = next(self._iterator)
         
-        def wrapper(simulation):
+        def modifier(simulation):
             (simulation.system, simulation.descriptors) = system
 
-        return wrapper
+        return modifier
     
 
 class Replica(EnsembleIterator):
-    def __init__(self, number_of):
+    def __init__(self, number_of_replicas):
         """Runs the *same* simulation multiple times. This is used in molecular dynamics to get
         averages and estimate error.
 
-        :param number_of: The number of pipelines to run consecutively.
+        :param number_of_replicas: The number of pipelines to run consecutively.
         """
-        super(Replica, self).__init__(name='replica', underlying_iterable=range(number_of))
+        super(Replica, self).__init__(underlying_iterable=range(number_of_replicas))
 
 
 class LambdaWindow(EnsembleIterator):
-    def __init__(self, number_of_states=0, number_of_windows=None, additional=None):
-        """Alchemical free energy transformation
+    def __init__(self, number_of_windows=0, additional=None):
+        """Alchemical free energy transformation lambda window
 
-        :param number_of_states: This is for GROMACS type configuration files only.
         :param number_of_windows: Number of equally spaced lambda windows
         :param additional: Additional lambda windows to run.
         """
-        it = range(number_of_states) if number_of_states is not None else np.linspace(0.0, 1.0, number_of_windows, endpoint=True)
+        it = np.linspace(0.0, 1.0, number_of_windows, endpoint=True)
         if additional:
             it = np.append(it, additional)
             it.sort()
-        super(LambdaWindow, self).__init__(name='lambda', underlying_iterable=it)
+        super(LambdaWindow, self).__init__(underlying_iterable=it)
 
     def next(self):
 
         ld = next(self._iterator)
 
-        def wrapper(simulation):
+        def modifier(simulation):
             simulation.pre_exec += ["sed -i 's/LAMBDA/{}/g' *.conf".format(ld)]
 
-        return wrapper
+        return modifier
