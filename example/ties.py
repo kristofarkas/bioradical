@@ -32,13 +32,14 @@ def main():
                                     '{}/build/complex.top'.format(root_directory),
                                     '{}/build/tags.pdb'.format(root_directory),
                                     '{}/constraint/f4.pdb'.format(root_directory)]
-    resource_manager.shared_data += ["confs/{}.conf".format(w) for w in wf.steps]
+    resource_manager.shared_data += ["esmacs-ties-confs/{}.conf".format(w) for w in wf.steps]
 
     # Create Application Manager
     app_manager = AppManager()
     app_manager.resource_manager = resource_manager
     app_manager.assign_workflow(wf.generate_pipelines())
     app_manager.run()
+
 
 if __name__ == '__main__':
     

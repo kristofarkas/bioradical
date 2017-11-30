@@ -1,4 +1,3 @@
-import os
 from radical.entk import ResourceManager, AppManager
 from bioradical.workflow import ESMACSWorkflow
 
@@ -25,7 +24,7 @@ def main():
     # Create Resource Manager object with the above resource description
     resource_manager = ResourceManager(res_dict)
     resource_manager.shared_data = ['{}/build/complex.pdb'.format(root_directory), '{}/build/complex.top'.format(root_directory), '{}/constraint/cons.pdb'.format(root_directory)]
-    resource_manager.shared_data += ["confs/{}.conf".format(w) for w in wf.steps]
+    resource_manager.shared_data += ["esmacs-ties-confs/{}.conf".format(w) for w in wf.steps]
 
     # Create Application Manager
     app_manager = AppManager()
