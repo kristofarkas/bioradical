@@ -7,11 +7,11 @@ def main():
     
     # ESMACS workflow
 
-    wf = TIESWorkflow(number_of_replicas=1, 
+    wf = TIESWorkflow(number_of_replicas=10,
                       steps=['min', 'eq1', 'eq2', 'prod'], 
                       system='complex', 
                       descriptors=['f4.pdb', 'tags.pdb'],
-                      additional=[0.5])
+                      additional=[0.0, 0.5])
 
     # Resource and AppManager
     

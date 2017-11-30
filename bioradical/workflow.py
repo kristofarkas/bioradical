@@ -1,13 +1,16 @@
 import os
 from itertools import product
-from radical.entk import Pipeline
+from radical.entk import Pipeline, ResourceManager, AppManager
 
 from bioradical.ensemble import LambdaWindow, Replica, Systems
 from bioradical.simulation import Simulation
 
 
-class Workflow(object):
+class Workflow(ResourceManager, AppManager):
+
     def __init__(self):
+        ResourceManager.__init__(self, self._resource_dictionary)
+        AppManager.__init__(self)
         self.ensembles = list()
         self.steps = list()
 
@@ -35,6 +38,15 @@ class Workflow(object):
         steps = [f[:-5] for (_, _, paths) in os.walk(folder) if paths for f in paths if f.endswith('.conf')]
         print('Detected steps: {}'.format(steps))
         self.steps = steps
+
+    _resource_dictionary = {
+        'resource': 'ncsa.bw_aprun',
+        'walltime': 60,
+        'cores': 16,
+        'project': 'bamm',
+        'queue': 'normal',
+        'access_schema': 'gsissh'
+    }
 
 
 class ESMACSWorkflow(Workflow):
