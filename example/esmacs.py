@@ -6,7 +6,10 @@ def main():
     
     # ESMACS workflow
 
-    wf = ESMACSWorkflow(number_of_replicas=1, steps=['eq0', 'eq1', 'eq2', 'sim1'])
+    wf = ESMACSWorkflow(number_of_replicas=1,
+                        steps=['eq0', 'eq1', 'eq2', 'sim1'],
+                        system='complex',
+                        descriptors=['cons.pdb'])
 
     # Resource and AppManager
     
