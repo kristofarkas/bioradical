@@ -41,7 +41,7 @@ class Systems(EnsembleIterator):
 
     @property
     def cores(self):
-        return sum([s.cores for s in self.underlying_iterable])
+        return sum([system.cores for system in self.underlying_iterable])
     
 
 class Replica(EnsembleIterator):

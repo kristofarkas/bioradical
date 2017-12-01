@@ -63,7 +63,7 @@ class Simulation(Task):
                 if len(self.pipeline.stages) > 1:  # This is not the first stage.
                     previous_stage = self.pipeline.stages[-2]
                     # FIXME: This is fucked up!
-                    (previous_task, ) = previous_stage.tasks
+                    previous_task = next(iter(previous_stage.tasks))
                     path = '$Pipeline_{}_Stage_{}_Task_{}'.format(self.pipeline.uid, previous_stage.uid, previous_task.uid)
                     files_to_link.extend("{}/{}{}".format(path, previous_stage.name, suffix) for suffix in _simulation_file_suffixes)
                 else:
