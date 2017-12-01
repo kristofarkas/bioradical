@@ -15,6 +15,6 @@ setup(
 
     packages=find_packages(),
 
-    install_requires=['numpy', 'radical.entk']
+    install_requires=['numpy', 'radical.entk', 'parmed']
 )
 

@@ -22,6 +22,9 @@ class EnsembleIterator(Iterator):
     def __subclasshook__(cls, C):
         return super(EnsembleIterator, cls).__subclasshook__(C)
 
+    def __len__(self):
+        return len(self.underlying_iterable)
+
 
 class Systems(EnsembleIterator):
     def __init__(self, systems=None):
@@ -31,9 +34,12 @@ class Systems(EnsembleIterator):
         system = next(self._iterator)
         
         def modifier(simulation):
-            (simulation.system, simulation.descriptors) = system
+            simulation.system = system
 
         return modifier
+
+    def __len__(self):
+        sum([len(s) for s in self.underlying_iterable])
     
 
 class Replica(EnsembleIterator):

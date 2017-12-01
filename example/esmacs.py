@@ -1,39 +1,24 @@
-from radical.entk import ResourceManager, AppManager
+from radical.entk import AppManager
 from bioradical.workflow import ESMACSWorkflow
+from bioradical.system import System
 
 
 def main():
     
-    # ESMACS workflow
+    # Define the system workflow
 
-    wf = ESMACSWorkflow(number_of_replicas=1,
-                        steps=['eq0', 'eq1', 'eq2', 'sim1'],
-                        system='complex',
-                        descriptors=['cons.pdb'])
+    gsk1 = System(path='testsystem/radical-isc/esmacs/brd4-gsk1', name='complex', cores=16)
 
-    # Resource and AppManager
-    
-    res_dict = {
-            'resource': 'ncsa.bw_aprun',
-            'walltime': 60,
-            'cores': 16,
-            'project': 'bamm',
-            'queue': 'normal',
-            'access_schema': 'gsissh'
-    }
-    
-    root_directory = 'testsystem/radical-isc/esmacs/brd4-gsk1'
+    wf = ESMACSWorkflow(number_of_replicas=25, system=gsk1)
 
-    # Create Resource Manager object with the above resource description
-    resource_manager = ResourceManager(res_dict)
-    resource_manager.shared_data = ['{}/build/complex.pdb'.format(root_directory),
-                                    '{}/build/complex.top'.format(root_directory),
-                                    '{}/constraint/cons.pdb'.format(root_directory)]
-    resource_manager.shared_data += ["esmacs-confs/{}.conf".format(w) for w in wf.steps]
+    wf.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
+                       'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.top',
+                       'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
+                       'testsystem/radical-isc/esmacs/brd4-gsk1/constraint/cons.pdb']
 
     # Create Application Manager
     app_manager = AppManager()
-    app_manager.resource_manager = resource_manager
+    app_manager.resource_manager = wf
     app_manager.assign_workflow(wf.generate_pipelines())
     app_manager.run()
 

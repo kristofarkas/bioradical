@@ -1,11 +1,10 @@
-import os
 from radical.entk import ResourceManager, AppManager
 from bioradical.workflow import TIESWorkflow
 
 
 def main():
     
-    # ESMACS workflow
+    # TIES workflow
 
     wf = TIESWorkflow(number_of_replicas=10,
                       steps=['min', 'eq1', 'eq2', 'prod'], 
