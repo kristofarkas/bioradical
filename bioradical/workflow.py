@@ -12,8 +12,8 @@ from bioradical.step import Step
 class Workflow(ResourceManager):
 
     def __init__(self):
-        self.ensembles = list()
-        self.steps = list()
+        self._ensembles = list()
+        self._steps = list()
 
     @property
     def steps(self):
@@ -82,7 +82,7 @@ class Workflow(ResourceManager):
     def _resource_dictionary(self):
         return dict(resource='ncsa.bw_aprun',
                     walltime=60,
-                    cores=reduce(operator.mul, (len(e) for e in self.ensembles), 1),
+                    cores=reduce(operator.mul, (e.cores for e in self.ensembles), 1),
                     project='bamm',
                     queue='normal',
                     access_schema='gsissh')

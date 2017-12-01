@@ -10,13 +10,11 @@ class System(object):
         self.name = name
         self.cores = cores
 
-        structure = pmd.load_file(path+'build/complex.crd')
+        structure = pmd.load_file(path+'/build/complex.crd')
         self.box = structure.box
 
     @property
     def descriptors(self):
         return ['cons.pdb']
 
-    def __len__(self):
-        return self.cores
 
