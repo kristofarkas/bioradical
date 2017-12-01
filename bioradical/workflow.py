@@ -3,6 +3,7 @@ import operator
 import pkg_resources
 from itertools import product
 from radical.entk import Pipeline, ResourceManager
+from pkgutil import extend_path
 
 from bioradical.ensemble import LambdaWindow, Replica, Systems
 from bioradical.simulation import Simulation
@@ -93,7 +94,7 @@ class ESMACSWorkflow(Workflow):
         super(ESMACSWorkflow, self).__init__()
         self.ensembles = [Replica(number_of_replicas),
                           Systems([system])]
-        default_steps = pkg_resources.resource_string(__name__, 'default_configs/esmacs')
+        default_steps = extend_path(__path__, __name__)
         self.steps = steps if steps else self._inferred_steps(folder=default_steps)
 
 
