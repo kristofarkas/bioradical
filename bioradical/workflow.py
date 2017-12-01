@@ -94,7 +94,7 @@ class ESMACSWorkflow(Workflow):
         super(ESMACSWorkflow, self).__init__()
         self.ensembles = [Replica(number_of_replicas),
                           Systems([system])]
-        default_steps = extend_path(__path__, __name__)
+        default_steps = pkg_resources.resource_filename(__name__, 'default_configs/esmacs')
         self.steps = steps if steps else self._inferred_steps(folder=default_steps)
 
 
@@ -104,5 +104,6 @@ class TIESWorkflow(Workflow):
         self.ensembles = [Replica(number_of_replicas),
                           LambdaWindow(number_of_windows, additional_windows),
                           Systems([system])]
-        default_steps = pkg_resources.resource_string(__name__, 'default_configs/ties')
+        pkg_resources.resource_listdir()
+        default_steps = pkg_resources.resource_filename(__name__, 'default_configs/ties')
         self.steps = steps if steps else self._inferred_steps(folder=default_steps)
