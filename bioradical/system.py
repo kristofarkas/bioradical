@@ -15,6 +15,6 @@ class System(object):
 
     @property
     def descriptors(self):
-        return ['cons.pdb']
+        return ['cons.pdb', 'tags.pdb']
 
 
