@@ -2,8 +2,8 @@ import os
 import operator
 import pkg_resources
 from itertools import product
+
 from radical.entk import Pipeline, ResourceManager
-from pkgutil import extend_path
 
 from bioradical.ensemble import LambdaWindow, Replica, Systems
 from bioradical.simulation import Simulation

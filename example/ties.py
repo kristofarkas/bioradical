@@ -1,55 +1,36 @@
-from radical.entk import ResourceManager, AppManager
+from radical.entk import AppManager
 from bioradical.workflow import TIESWorkflow
+from bioradical.system import System
 
 
 def main():
-    
-    # TIES workflow
+    # Define the system workflow
 
-    wf = TIESWorkflow(number_of_replicas=10,
-                      steps=['min', 'eq1', 'eq2', 'prod'], 
-                      system='complex', 
-                      descriptors=['f4.pdb', 'tags.pdb'],
-                      additional=[0.0, 0.5])
+    gsk1 = System(path='testsystem/radical-isc/ties/brd4-gsk3-1', name='complex', cores=16)
 
-    # Resource and AppManager
-    
-    res_dict = {
-            'resource': 'ncsa.bw_aprun',
-            'walltime': 30,
-            'cores': 16,
-            'project': 'bamm',
-            'queue': 'normal',
-            'access_schema': 'gsissh'
-    }
-    
-    root_directory = 'bace1_b01'
+    wf = TIESWorkflow(number_of_replicas=1, system=gsk1, additional_windows=[0.5])
 
-    # Create Resource Manager object with the above resource description
-    resource_manager = ResourceManager(res_dict)
-    resource_manager.shared_data = ['{}/build/complex.pdb'.format(root_directory), 
-                                    '{}/build/complex.top'.format(root_directory),
-                                    '{}/build/tags.pdb'.format(root_directory),
-                                    '{}/constraint/f4.pdb'.format(root_directory)]
-    resource_manager.shared_data += ["esmacs-ties/{}.conf".format(w) for w in wf.steps]
+    wf.shared_data += ['testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.pdb',
+                       'testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.top',
+                       'testsystem/radical-isc/ties/brd4-gsk3-1/build/tags.pdb']
 
     # Create Application Manager
     app_manager = AppManager()
-    app_manager.resource_manager = resource_manager
+    app_manager.resource_manager = wf
     app_manager.assign_workflow(wf.generate_pipelines())
     app_manager.run()
 
 
 if __name__ == '__main__':
-    
     import os
+
     os.environ['RADICAL_ENTK_VERBOSE'] = 'INFO'
     os.environ['RADICAL_PILOT_DBURL'] = 'mongodb://radical:fg*2GT3^eB@crick.chem.ucl.ac.uk:27017/admin'
     os.environ['RP_ENABLE_OLD_DEFINES'] = 'True'
-    os.environ['SAGA_PTY_SSH_TIMEOUT']='2000'
-    os.environ['RADICAL_PILOT_PROFILE']='True'
-    os.environ['RADICAL_ENMD_PROFILE']='True'
-    os.environ['RADICAL_ENMD_PROFILING']='1'
+    os.environ['SAGA_PTY_SSH_TIMEOUT'] = '2000'
+    os.environ['RADICAL_PILOT_PROFILE'] = 'True'
+    os.environ['RADICAL_ENMD_PROFILE'] = 'True'
+    os.environ['RADICAL_ENMD_PROFILING'] = '1'
 
     main()
 
