@@ -9,7 +9,7 @@ def main():
 
     gsk1 = System(path='testsystem/radical-isc/esmacs/brd4-gsk1', name='complex', cores=16)
 
-    wf = ESMACSWorkflow(number_of_replicas=25, system=gsk1)
+    wf = ESMACSWorkflow(number_of_replicas=1, system=gsk1)
 
     wf.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
                        'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.top',
