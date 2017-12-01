@@ -6,7 +6,7 @@ _namd = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-MPI-BlueWaters/namd2'
 
 
 class Simulation(Task):
-    def __init__(self, step=None, pipeline=None, system=None):
+    def __init__(self, step, pipeline, system=None):
         """Create a new simulation step.
 
         :param step: The name of the step, for example: min, eq, prod, sim etc.
@@ -17,6 +17,12 @@ class Simulation(Task):
 
         self.step = step
         self.pipeline = pipeline
+
+        step.add_tasks(self)
+        pipeline.add_stages(step)
+        self.arguments = ['{}.conf'.format(step.name)]
+        self.copy_input_data = ['$SHARED/{}.conf'.format(step.name)]
+
         self.system = system
 
         self.executable = [_namd]
@@ -24,17 +30,6 @@ class Simulation(Task):
 
         # self.pre_exec = ['export OMP_NUM_THREADS=1']
         # self.cpu_reqs = {'processes': 1, 'process_type': 'MPI', 'threads_per_process': 31, 'thread_type': None}
-
-    @property
-    def step(self):
-        return self._step
-
-    @step.setter
-    def step(self, new_step):
-        self._step = new_step
-        new_step.add_tasks(self)
-        self.arguments = ['{}.conf'.format(new_step.name)]
-        self.copy_input_data = ['$SHARED/{}.conf'.format(new_step.name)]
 
     @property
     def system(self):
