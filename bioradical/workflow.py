@@ -102,6 +102,5 @@ class TIESWorkflow(Workflow):
         self.ensembles = [Replica(number_of_replicas),
                           LambdaWindow(number_of_windows, additional_windows),
                           Systems([system])]
-        pkg_resources.resource_listdir()
         default_steps = pkg_resources.resource_filename(__name__, 'default_configs/ties')
         self.steps = steps if steps else self._inferred_steps(folder=default_steps)
