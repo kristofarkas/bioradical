@@ -18,6 +18,8 @@ def main():
     app_manager = AppManager()
     app_manager.resource_manager = wf
     app_manager.assign_workflow(wf.generate_pipelines())
+    print 'Stack:'
+    print wf
     print 'Running on {} cores'.format(wf.cores)
     app_manager.run()
 

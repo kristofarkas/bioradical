@@ -1,6 +1,7 @@
 import os
 import operator
 import pkg_resources
+from copy import deepcopy
 from itertools import product
 
 from radical.entk import Pipeline, ResourceManager
@@ -40,9 +41,11 @@ class Workflow(ResourceManager):
 
     def generate_pipelines(self):
         pipeline = Pipeline()
-
-        for step in self.steps:
+        steps = deepcopy(self.steps)
+        for step in steps:
+            pipeline.add_stages(step)
             for ensembles in product(*self.ensembles):
+                print 'Generating simulation for step {}'.format(step)
                 # Instantiate a new simulation
                 simulation = Simulation(step=step, pipeline=pipeline)
                 # Apply all the modifications to it
