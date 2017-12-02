@@ -5,7 +5,7 @@ class System(object):
     """A system object describing the files that are required to run the simulation.
 
     """
-    def __init__(self, path, name, cores=16):
+    def __init__(self, path, name, cores):
         self.path = path
         self.name = name
         self.cores = cores

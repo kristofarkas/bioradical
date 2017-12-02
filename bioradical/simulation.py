@@ -28,7 +28,7 @@ class Simulation(Task):
         self.executable = [_namd]
         self.mpi = True
 
-        # self.pre_exec = ['export OMP_NUM_THREADS=1']
+        # self.pre_exec += ['export OMP_NUM_THREADS=1']
         # self.cpu_reqs = {'processes': 1, 'process_type': 'MPI', 'threads_per_process': 31, 'thread_type': None}
 
     @property

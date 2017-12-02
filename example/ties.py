@@ -6,9 +6,9 @@ from bioradical.system import System
 def main():
     # Define the system workflow
 
-    gsk1 = System(path='testsystem/radical-isc/ties/brd4-gsk3-1', name='complex', cores=16)
+    gsk1 = System(path='testsystem/radical-isc/ties/brd4-gsk3-1', name='complex', cores=32)
 
-    wf = TIESWorkflow(number_of_replicas=1, system=gsk1, additional_windows=[0.5])
+    wf = TIESWorkflow(number_of_replicas=2, system=gsk1, additional_windows=[0.5, 0.6])
 
     wf.shared_data += ['testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.pdb',
                        'testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.top',
@@ -18,6 +18,7 @@ def main():
     app_manager = AppManager()
     app_manager.resource_manager = wf
     app_manager.assign_workflow(wf.generate_pipelines())
+    print 'Running on {} cores'.format(wf.cores)
     app_manager.run()
 
 
