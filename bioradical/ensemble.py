@@ -53,6 +53,15 @@ class Replica(EnsembleIterator):
         """
         super(Replica, self).__init__(underlying_iterable=range(number_of_replicas))
 
+    def next(self):
+
+        rep = next(self._iterator)
+
+        def modifier(simulation):
+            simulation.name += '_replica_{}'.format(rep)
+
+        return modifier
+
 
 class LambdaWindow(EnsembleIterator):
     def __init__(self, number_of_windows=0, additional=None):
@@ -72,6 +81,7 @@ class LambdaWindow(EnsembleIterator):
         ld = next(self._iterator)
 
         def modifier(simulation):
+            simulation.name += '_lambda_{}'.format(ld)
             simulation.pre_exec += ["sed -i 's/LAMBDA/{}/g' *.conf".format(ld)]
 
         return modifier
