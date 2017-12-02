@@ -21,9 +21,6 @@ class Step(Stage):
         eq = self.type == other.type
         return True if lt else self.name < other.name if eq else False
 
-    def __repr__(self):
-        return self.name
-
     class _StepType(IntEnum):
         minimize = 0
         equilibration = 1
