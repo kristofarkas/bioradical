@@ -48,8 +48,6 @@ class Workflow(ResourceManager):
                 simulation = Simulation(step=step, pipeline=pipeline)
                 # Apply all the modifications to it
                 [modify(simulation) for modify in ensembles]
-
-            pipeline.add_stages(step)
         return pipeline
 
         # pipelines = set()

@@ -18,6 +18,8 @@ class Simulation(Task):
         self.step = step
         self.pipeline = pipeline
         step.add_tasks(self)
+        if step not in pipeline.stages:
+            pipeline.add_stages(step)
 
         self.arguments = ['{}.conf'.format(step.name)]
         self.copy_input_data = ['$SHARED/{}.conf'.format(step.name)]
