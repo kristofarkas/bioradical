@@ -41,11 +41,10 @@ class Workflow(ResourceManager):
 
     def generate_pipelines(self):
         pipeline = Pipeline()
-        steps = deepcopy(self.steps)
-        for step in steps:
+        for step in self.steps:
             pipeline.add_stages(step)
             for ensembles in product(*self.ensembles):
-                print 'Generating simulation for step {}'.format(step)
+                # print 'Generating simulation for step {}'.format(step)
                 # Instantiate a new simulation
                 simulation = Simulation(step=step, pipeline=pipeline)
                 # Apply all the modifications to it
@@ -89,14 +88,14 @@ class Workflow(ResourceManager):
                     queue='normal',
                     access_schema='gsissh')
 
-    def __repr__(self):
-        pipeline = self.generate_pipelines()
-        desc = str()
-        for stage in pipeline.stages:
-            desc += "{}\n".format(stage)
-            for task in stage.tasks:
-                desc += "\t{}\n".format(task)
-        return desc
+    # def __repr__(self):
+    #     pipeline = self.generate_pipelines()
+    #     desc = str()
+    #     for stage in pipeline.stages:
+    #         desc += "{}\n".format(stage)
+    #         for task in stage.tasks:
+    #             desc += "\t{}\n".format(task)
+    #     return desc
 
 
 class ESMACSWorkflow(Workflow):

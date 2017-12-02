@@ -57,7 +57,7 @@ class Simulation(Task):
                 if self.pipeline.stages.index(self.step) > 0:  # This is not the first stage.
                     previous_stage = self.pipeline.stages[self.pipeline.stages.index(self.step)-1]
                     previous_task = next(task for task in previous_stage.tasks if task.name == self.name)
-                    print 'I ({}-{}) found previous simulation: {}-{}.'.format(self.step, self, previous_stage, previous_task)
+                    # print 'I ({}-{}) found previous simulation: {}-{}.'.format(self.step, self, previous_stage, previous_task)
                     path = '$Pipeline_{}_Stage_{}_Task_{}'.format(self.pipeline.uid, previous_stage.uid, previous_task.uid)
                     files_to_link.extend("{}/{}{}".format(path, previous_stage.name, suffix) for suffix in _simulation_file_suffixes)
                 else:
