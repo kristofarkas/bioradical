@@ -1,7 +1,6 @@
 import os
 import operator
 import pkg_resources
-from copy import deepcopy
 from itertools import product
 
 from radical.entk import Pipeline, ResourceManager
@@ -85,15 +84,6 @@ class Workflow(ResourceManager):
                     project='bamm',
                     queue='normal',
                     access_schema='gsissh')
-
-    # def __repr__(self):
-    #     pipeline = self.generate_pipelines()
-    #     desc = str()
-    #     for stage in pipeline.stages:
-    #         desc += "{}\n".format(stage)
-    #         for task in stage.tasks:
-    #             desc += "\t{}\n".format(task)
-    #     return desc
 
 
 class ESMACSWorkflow(Workflow):

@@ -75,7 +75,3 @@ class Simulation(Task):
         stage = Stage()
         stage.add_tasks(self)
         return stage
-
-    def __repr__(self):
-        return self.name
-
