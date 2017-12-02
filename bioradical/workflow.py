@@ -42,7 +42,6 @@ class Workflow(ResourceManager):
     def generate_pipelines(self):
         pipeline = Pipeline()
         for step in self.steps:
-            pipeline.add_stages(step)
             for ensembles in product(*self.ensembles):
                 # print 'Generating simulation for step {}'.format(step)
                 # Instantiate a new simulation
@@ -50,6 +49,7 @@ class Workflow(ResourceManager):
                 # Apply all the modifications to it
                 [modify(simulation) for modify in ensembles]
 
+            pipeline.add_stages(step)
         return pipeline
 
         # pipelines = set()
