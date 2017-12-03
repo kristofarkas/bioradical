@@ -3,7 +3,7 @@ import operator
 import pkg_resources
 from itertools import product
 
-from radical.entk import Pipeline, ResourceManager, Stage
+from radical.entk import Pipeline, ResourceManager
 
 from bioradical.step import Step
 from bioradical.simulation import Simulation

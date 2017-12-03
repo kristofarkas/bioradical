@@ -19,7 +19,7 @@ class Simulation(object):
 
         task = Task()
 
-        task.name = 'simulation'
+        task.name = self.name
         task.arguments = ['{}.conf'.format(self.stage.name)]
         task.copy_input_data = ['$SHARED/{}.conf'.format(self.stage.name)]
         task.executable = [NAMD2]
