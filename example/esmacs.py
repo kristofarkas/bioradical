@@ -8,7 +8,7 @@ def main():
     
     # Define the system workflow
 
-    gsk1 = System(path='testsystem/radical-isc/esmacs/brd4-gsk1', name='complex', cores=16)
+    gsk1 = System(path='testsystem/radical-isc/esmacs/brd4-gsk1', name='complex', cores=32)
 
     wf = ESMACSWorkflow(number_of_replicas=2, system=gsk1)
 
@@ -22,7 +22,7 @@ def main():
     # Create Application Manager
     app_manager = AppManager()
     app_manager.resource_manager = rman
-    app_manager.assign_workflow(wf.generate_pipeline())
+    app_manager.assign_workflow([wf.generate_pipeline()])
     app_manager.run()
 
 

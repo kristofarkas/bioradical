@@ -14,7 +14,6 @@ class Step(object):
     def as_stage(self):
         stage = Stage()
         stage.name = self.name
-
         return stage
 
     def __eq__(self, other):
