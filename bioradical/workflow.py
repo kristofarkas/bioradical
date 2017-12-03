@@ -50,7 +50,7 @@ class Workflow(object):
     def _resource_dictionary(self):
         return dict(resource='ncsa.bw_aprun',
                     walltime=60,
-                    cores=reduce(operator.mul, (e.cores for e in self.ensembles), 1),
+                    cpus=reduce(operator.mul, (e.cores for e in self.ensembles), 1),
                     project='bamm',
                     queue='normal',
                     access_schema='gsissh')
