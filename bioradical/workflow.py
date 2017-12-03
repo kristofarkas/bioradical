@@ -48,13 +48,10 @@ class Workflow(object):
 
     @property
     def _resource_dictionary(self):
-        return dict(resource='ncsa.bw_aprun',
-                    walltime=60,
-                    cpus=reduce(operator.mul, (e.cores for e in self.ensembles), 1),
-                    cores=reduce(operator.mul, (e.cores for e in self.ensembles), 1),
-                    project='bamm',
-                    queue='normal',
-                    access_schema='gsissh')
+        d = dict(resource='ncsa.bw_aprun', walltime=60, project='bamm', queue='normal', access_schema='gsissh')
+        d['cpus' if os.environ.get('RADICAL_GPU') == 'True' else 'cores'] \
+            = reduce(operator.mul, (e.cores for e in self.ensembles), 1)
+        return d
 
 
 class ESMACSWorkflow(Workflow):
