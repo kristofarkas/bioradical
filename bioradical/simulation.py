@@ -1,8 +1,11 @@
-from __future__ import print_function
+import os
 
 from radical.entk import Task
 
-NAMD2 = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-ugni-smp-BlueWaters/namd2'
+if os.environ.get('RADICAL_GPU') == 'True':
+    NAMD2 = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-ugni-smp-BlueWaters/namd2'
+else:
+    NAMD2 = '/u/sciteam/jphillip/NAMD_LATEST_CRAY-XE-MPI-BlueWaters/namd2'
 
 _simulation_file_suffixes = ['.coor', '.xsc', '.vel']
 
@@ -22,17 +25,21 @@ class Simulation(object):
         task = Task()
 
         task.name = self.name
-        task.arguments = ['+ppn', '30', '+pemap', '0-29', '+commap', '30', '{}.conf'.format(self.stage.name)]
+        if os.environ.get('RADICAL_GPU') == 'True':
+            task.arguments += ['+ppn', '30', '+pemap', '0-29', '+commap', '30']
+
+        task.arguments += ['{}.conf'.format(self.stage.name)]
         task.copy_input_data = ['$SHARED/{}.conf'.format(self.stage.name)]
         task.executable = [NAMD2]
 
-        # For rc/0.46.3 stack
-        # task.mpi = True
-        # task.cores = self.system.cores
-
-        # For gpu branch
-        task.pre_exec += ['export OMP_NUM_THREADS=1']
-        task.cpu_reqs = {'processes': 1, 'process_type': 'MPI', 'threads_per_process': 31, 'thread_type': None}
+        if os.environ.get('RADICAL_GPU') == 'True':
+            # For gpu branch
+            task.pre_exec += ['export OMP_NUM_THREADS=1']
+            task.cpu_reqs = {'processes': 1, 'process_type': 'MPI', 'threads_per_process': 31, 'thread_type': None}
+        else:
+            # For rc/0.46.3 stack
+            task.mpi = True
+            task.cores = self.system.cores
 
         # Linking
 

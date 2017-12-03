@@ -35,6 +35,7 @@ if __name__ == '__main__':
     os.environ['RADICAL_PILOT_PROFILE'] = 'True'
     os.environ['RADICAL_ENMD_PROFILE'] = 'True'
     os.environ['RADICAL_ENMD_PROFILING'] = '1'
+    os.environ['RADICAL_GPU'] = 'True'
 
     main()
 

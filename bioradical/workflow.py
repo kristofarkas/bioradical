@@ -51,6 +51,7 @@ class Workflow(object):
         return dict(resource='ncsa.bw_aprun',
                     walltime=60,
                     cpus=reduce(operator.mul, (e.cores for e in self.ensembles), 1),
+                    cores=reduce(operator.mul, (e.cores for e in self.ensembles), 1),
                     project='bamm',
                     queue='normal',
                     access_schema='gsissh')

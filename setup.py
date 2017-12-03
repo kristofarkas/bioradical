@@ -11,10 +11,10 @@ setup(
 
     url='http://ccs.chem.ucl.ac.uk',
 
-    author='CCS',
+    author='Kristof Farkas-Pall',
 
     packages=find_packages(),
 
-    install_requires=['numpy', 'radical.entk', 'parmed']
+    install_requires=['numpy', 'radical.entk', 'parmed', 'enum34']
 )
 
