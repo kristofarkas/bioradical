@@ -17,21 +17,26 @@ class Workflow(object):
         self.steps = steps
 
     def generate_pipeline(self):
-        # Create a new pipeline
-        pipeline = Pipeline()
+        pipelines = set()
 
-        # Create the stages, and add them all to the pipeline
-        stages = [step.as_stage() for step in self.steps]
-        pipeline.add_stages(stages)
+        for ensembles in product(*self.ensembles):
+            # Create a new pipeline
+            pipeline = Pipeline()
 
-        # Loop through all the stages, and generate all the tasks.
-        for stage in stages:
-            for ensembles in product(*self.ensembles):
+            # Create the stages, and add them all to the pipeline
+            stages = [step.as_stage() for step in self.steps]
+            pipeline.add_stages(stages)
+
+            # Loop through all the stages, and generate all the tasks.
+            for stage in stages:
+
                 simulation = Simulation(stage=stage, pipeline=pipeline)
                 [modify(simulation) for modify in ensembles]
                 stage.add_tasks(simulation.as_task())
 
-        return pipeline
+            pipelines.add(pipeline)
+
+        return pipelines
 
     def resource_manager(self):
         resource_manager = ResourceManager(self._resource_dictionary)
