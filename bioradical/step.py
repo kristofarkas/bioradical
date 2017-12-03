@@ -5,12 +5,17 @@ from radical.entk import Stage
 
 
 @total_ordering
-class Step(Stage):
+class Step(object):
     def __init__(self, name, path):
-        super(Step, self).__init__()
         self.name = name
         self.type = self._StepType.get(name)
         self.path = path
+
+    def as_stage(self):
+        stage = Stage()
+        stage.name = self.name
+
+        return stage
 
     def __eq__(self, other):
         eq = self.type == other.type
@@ -38,3 +43,12 @@ class Step(Stage):
             if value.startswith('prod'):
                 return cls.production
             return NotImplemented
+
+
+class TIESAnalysis(object):
+
+    _NAMD_TI_ANALYSIS = "/u/sciteam/farkaspa/namd/ti/namd2_ti.pl"
+
+    def __init__(self):
+        pass
+

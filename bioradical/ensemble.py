@@ -12,11 +12,7 @@ class EnsembleIterator(Iterator):
         return self
 
     def next(self):
-        next(self._iterator)
-        return self._do_nothing
-
-    def _do_nothing(self, *args):
-        pass
+        return NotImplemented
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -28,13 +24,14 @@ class EnsembleIterator(Iterator):
 
 
 class Systems(EnsembleIterator):
-    def __init__(self, systems=None):
+    def __init__(self, systems):
         super(Systems, self).__init__(underlying_iterable=systems)
 
     def next(self):
         system = next(self._iterator)
         
         def modifier(simulation):
+            simulation.name += '_system_{}'.format(system.name)
             simulation.system = system
 
         return modifier
@@ -82,6 +79,6 @@ class LambdaWindow(EnsembleIterator):
 
         def modifier(simulation):
             simulation.name += '_lambda_{}'.format(ld)
-            simulation.pre_exec += ["sed -i 's/LAMBDA/{}/g' *.conf".format(ld)]
+            simulation.lambda_window = ld
 
         return modifier

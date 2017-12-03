@@ -1,6 +1,7 @@
 from radical.entk import AppManager
-from bioradical.workflow import ESMACSWorkflow
+
 from bioradical.system import System
+from bioradical.workflow import ESMACSWorkflow
 
 
 def main():
@@ -9,17 +10,19 @@ def main():
 
     gsk1 = System(path='testsystem/radical-isc/esmacs/brd4-gsk1', name='complex', cores=16)
 
-    wf = ESMACSWorkflow(number_of_replicas=1, system=gsk1)
+    wf = ESMACSWorkflow(number_of_replicas=2, system=gsk1)
 
-    wf.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
-                       'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.top',
-                       'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
-                       'testsystem/radical-isc/esmacs/brd4-gsk1/constraint/cons.pdb']
+    rman = wf.resource_manager()
+
+    rman.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
+                         'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.top',
+                         'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
+                         'testsystem/radical-isc/esmacs/brd4-gsk1/constraint/cons.pdb']
 
     # Create Application Manager
     app_manager = AppManager()
-    app_manager.resource_manager = wf
-    app_manager.assign_workflow(wf.generate_pipelines())
+    app_manager.resource_manager = rman
+    app_manager.assign_workflow(wf.generate_pipeline())
     app_manager.run()
 
 

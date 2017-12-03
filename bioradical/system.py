@@ -2,9 +2,6 @@ import parmed as pmd
 
 
 class System(object):
-    """A system object describing the files that are required to run the simulation.
-
-    """
     def __init__(self, path, name, cores):
         self.path = path
         self.name = name

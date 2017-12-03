@@ -1,6 +1,7 @@
 from radical.entk import AppManager
-from bioradical.workflow import TIESWorkflow
+
 from bioradical.system import System
+from bioradical.workflow import TIESWorkflow
 
 
 def main():
@@ -10,17 +11,17 @@ def main():
 
     wf = TIESWorkflow(number_of_replicas=2, system=gsk1, additional_windows=[0.5, 0.6])
 
-    wf.shared_data += ['testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.pdb',
-                       'testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.top',
-                       'testsystem/radical-isc/ties/brd4-gsk3-1/build/tags.pdb']
+    rman = wf.resource_manager()
+
+    rman.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
+                         'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.top',
+                         'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
+                         'testsystem/radical-isc/esmacs/brd4-gsk1/constraint/cons.pdb']
 
     # Create Application Manager
     app_manager = AppManager()
-    app_manager.resource_manager = wf
-    app_manager.assign_workflow(wf.generate_pipelines())
-    print 'Stack:'
-    print wf
-    print 'Running on {} cores'.format(wf.cores)
+    app_manager.resource_manager = rman
+    app_manager.assign_workflow(wf.generate_pipeline())
     app_manager.run()
 
 
@@ -36,4 +37,5 @@ if __name__ == '__main__':
     os.environ['RADICAL_ENMD_PROFILING'] = '1'
 
     main()
+
 

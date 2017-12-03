@@ -3,77 +3,47 @@ import operator
 import pkg_resources
 from itertools import product
 
-from radical.entk import Pipeline, ResourceManager
+from radical.entk import Pipeline, ResourceManager, Stage
 
-from bioradical.ensemble import LambdaWindow, Replica, Systems
-from bioradical.simulation import Simulation
 from bioradical.step import Step
+from bioradical.simulation import Simulation
+from bioradical.ensemble import LambdaWindow, Replica, Systems
 
 
-class Workflow(ResourceManager):
+class Workflow(object):
 
-    def __init__(self):
-        self._ensembles = list()
-        self._steps = list()
+    def __init__(self, ensembles, steps):
+        self.ensembles = ensembles
+        self.steps = steps
 
-    @property
-    def steps(self):
-        return self._steps
-
-    @steps.setter
-    def steps(self, new_steps):
-        self._steps = new_steps
-        self.update()
-
-    @property
-    def ensembles(self):
-        return self._ensembles
-
-    @ensembles.setter
-    def ensembles(self, new_value):
-        self._ensembles = new_value
-        self.update()
-
-    def update(self):
-        ResourceManager.__init__(self, self._resource_dictionary)
-        self.shared_data += [step.path for step in self.steps]
-
-    def generate_pipelines(self):
+    def generate_pipeline(self):
+        # Create a new pipeline
         pipeline = Pipeline()
-        for step in self.steps:
+
+        # Create the stages, and add them all to the pipeline
+        stages = [step.as_stage() for step in self.steps]
+        pipeline.add_stages(stages)
+
+        # Loop through all the stages, and generate all the tasks.
+        for stage in stages:
             for ensembles in product(*self.ensembles):
-                # print 'Generating simulation for step {}'.format(step)
-                # Instantiate a new simulation
-                simulation = Simulation(step=step, pipeline=pipeline)
-                # Apply all the modifications to it
+                simulation = Simulation(stage=stage, pipeline=pipeline)
                 [modify(simulation) for modify in ensembles]
+                stage.add_tasks(simulation.as_task())
+
         return pipeline
 
-        # pipelines = set()
-        #
-        # for ensembles in product(*self.ensembles):
-        #     pipeline = Pipeline()
-        #
-        #     for step in self.steps:
-        #         # Instantiate a new simulation
-        #         simulation = Simulation(step=step, pipeline=pipeline)
-        #         # Apply all the modifications to it
-        #         [modify(simulation) for modify in ensembles]
-        #         # Add the simulation to the pipeline.
-        #         pipeline.add_stages(simulation.as_stage())
-        #
-        #     pipelines.add(pipeline)
-        #
-        # return pipelines
+    def resource_manager(self):
+        resource_manager = ResourceManager(self._resource_dictionary)
+        resource_manager.shared_data = [step.path for step in self.steps]
+        return resource_manager
 
     # Private methods
-
     @staticmethod
     def _inferred_steps(folder):
         steps = [Step(f[:-5], path='{}/{}'.format(d, f)) for (d, _, paths)
                  in os.walk(folder) if paths for f in paths if f.endswith('.conf')]
         steps.sort()
-        print('Detected steps (sorted): {}'.format(steps))
         return steps
 
     @property
