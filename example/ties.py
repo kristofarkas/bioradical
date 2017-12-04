@@ -9,14 +9,13 @@ def main():
 
     gsk1 = System(path='testsystem/radical-isc/ties/brd4-gsk3-1', name='complex', cores=32)
 
-    wf = TIESWorkflow(number_of_replicas=2, system=gsk1, additional_windows=[0.5, 0.6])
+    wf = TIESWorkflow(number_of_replicas=2, system=gsk1, number_of_windows=11)
 
     rman = wf.resource_manager()
 
-    rman.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk3-1/build/complex.pdb',
-                         'testsystem/radical-isc/esmacs/brd4-gsk3-1/build/complex.top',
-                         'testsystem/radical-isc/esmacs/brd4-gsk3-1/build/tags.pdb',
-                         'testsystem/radical-isc/esmacs/brd4-gsk3-1/constraint/cons.pdb']
+    rman.shared_data += ['testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.pdb',
+                         'testsystem/radical-isc/ties/brd4-gsk3-1/build/complex.top',
+                         'testsystem/radical-isc/ties/brd4-gsk3-1/build/tags.pdb']
 
     # Create Application Manager
     app_manager = AppManager()
