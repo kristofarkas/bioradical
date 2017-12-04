@@ -16,7 +16,6 @@ def main():
 
     rman.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
                          'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.top',
-                         'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
                          'testsystem/radical-isc/esmacs/brd4-gsk1/constraint/cons.pdb']
 
     # Create Application Manager
@@ -36,7 +35,7 @@ if __name__ == '__main__':
     os.environ['RADICAL_PILOT_PROFILE'] = 'True'
     os.environ['RADICAL_ENMD_PROFILE'] = 'True'
     os.environ['RADICAL_ENMD_PROFILING'] = '1'
-    os.environ['RADICAL_GPU'] = 'True'
+    os.environ['RADICAL_GPU'] = 'False'
 
     main()
 
