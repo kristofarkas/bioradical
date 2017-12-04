@@ -13,10 +13,10 @@ def main():
 
     rman = wf.resource_manager()
 
-    rman.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.pdb',
-                         'testsystem/radical-isc/esmacs/brd4-gsk1/build/complex.top',
-                         'testsystem/radical-isc/esmacs/brd4-gsk1/build/tags.pdb',
-                         'testsystem/radical-isc/esmacs/brd4-gsk1/constraint/cons.pdb']
+    rman.shared_data += ['testsystem/radical-isc/esmacs/brd4-gsk3-1/build/complex.pdb',
+                         'testsystem/radical-isc/esmacs/brd4-gsk3-1/build/complex.top',
+                         'testsystem/radical-isc/esmacs/brd4-gsk3-1/build/tags.pdb',
+                         'testsystem/radical-isc/esmacs/brd4-gsk3-1/constraint/cons.pdb']
 
     # Create Application Manager
     app_manager = AppManager()
