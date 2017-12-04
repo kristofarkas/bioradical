@@ -20,16 +20,14 @@ class Workflow(object):
         # Create a new pipeline
         pipeline = Pipeline()
 
-        # Create the stages, and add them all to the pipeline
-        stages = [step.as_stage() for step in self.steps]
-        pipeline.add_stages(stages)
-
         # Loop through all the stages, and generate all the tasks.
-        for stage in stages:
+        for step in self.steps:
+            stage = step.as_stage()
             for ensembles in product(*self.ensembles):
                 simulation = Simulation(stage=stage, pipeline=pipeline)
                 [modify(simulation) for modify in ensembles]
                 stage.add_tasks(simulation.as_task())
+            pipeline.add_stages(stage)
 
         return pipeline
 

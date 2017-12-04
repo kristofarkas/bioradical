@@ -22,7 +22,7 @@ def main():
     # Create Application Manager
     app_manager = AppManager()
     app_manager.resource_manager = rman
-    app_manager.assign_workflow([wf.generate_pipeline()])
+    app_manager.assign_workflow(wf.generate_pipeline())
     app_manager.run()
 
 
