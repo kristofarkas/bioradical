@@ -47,9 +47,8 @@ class Simulation(object):
         link += ['$SHARED/{}.top'.format(self.system.name)]
         link += ['$SHARED/{}'.format(f) for f in self.system.descriptors]
 
-        index = self.pipeline.stages.index(self.stage)
-        if index:
-            previous_stage = self.pipeline.stages[index-1]
+        if self.pipeline.stages:
+            previous_stage = self.pipeline.stages[-1]
             previous_task = next(task for task in previous_stage.tasks if task.name == self.name)
             path = '$Pipeline_{}_Stage_{}_Task_{}/'.format(self.pipeline.uid, previous_stage.uid, previous_task.uid)
             link += [path+previous_stage.name+suffix for suffix in _simulation_file_suffixes]
